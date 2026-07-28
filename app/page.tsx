@@ -19,7 +19,7 @@ export const page = () => {
     <div className='flex min-h-screen items-center justify-center'>
     <Card className="w-full max-w-sm">
       <CardHeader>
-        <CardTitle>Login to your account</CardTitle>
+        <CardTitle>Inicio del proyecto</CardTitle>
         <CardDescription>
           Enter your email below to login to your account
         </CardDescription>
