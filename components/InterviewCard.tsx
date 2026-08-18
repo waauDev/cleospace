@@ -3,11 +3,10 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { Button } from "./ui/button";
-
-
-import { cn, getRandomInterviewCover } from "@/lib/utils";
 import DisplayTechIcons from "./DisplayTechIcons";
 
+import { cn, getRandomInterviewCover } from "@/lib/utils";
+import { getFeedbackByInterviewId } from "@/lib/actions/general.actions";
 
 const InterviewCard = async ({
   interviewId,
@@ -17,8 +16,13 @@ const InterviewCard = async ({
   techstack,
   createdAt,
 }: InterviewCardProps) => {
-  const feedback = null as Feedback | null;
-    
+  const feedback =
+    userId && interviewId
+      ? await getFeedbackByInterviewId({
+          interviewId,
+          userId,
+        })
+      : null;
 
   const normalizedType = /mix/gi.test(type) ? "Mixed" : type;
 
@@ -34,7 +38,7 @@ const InterviewCard = async ({
   ).format("MMM D, YYYY");
 
   return (
-    <div className="card-border w-90 max-sm:w-full min-h-96">
+    <div className="card-border w-[90] max-sm:w-full min-h-96">
       <div className="card-interview">
         <div>
           {/* Type Badge */}
@@ -53,7 +57,7 @@ const InterviewCard = async ({
             alt="cover-image"
             width={90}
             height={90}
-            className="rounded-full object-fit size-22.5"
+            className="rounded-full object-fit size-[90px]"
           />
 
           {/* Interview Role */}
@@ -85,8 +89,7 @@ const InterviewCard = async ({
         </div>
 
         <div className="flex flex-row justify-between">
-            <DisplayTechIcons techStack={techstack}/>
-          
+          <DisplayTechIcons techStack={techstack} />
 
           <Button className="btn-primary">
             <Link
