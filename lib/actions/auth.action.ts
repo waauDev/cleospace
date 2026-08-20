@@ -19,7 +19,7 @@ export async function signUp(params:SignUpParams) {
             }
         }
 
-        await db.collection('users').doc('uid').set({
+        await db.collection('users').doc(uid).set({
             name, email,
         })
 
