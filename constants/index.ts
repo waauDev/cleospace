@@ -100,11 +100,11 @@ export const mappings = {
 export const interviewer: CreateAssistantDTO = {
   name: "Interviewer",
   firstMessage:
-    "Hello! Thank you for taking the time to speak with me today. I'm excited to learn more about you and your experience.",
+    "¡Hola! Gracias por tomarte el tiempo de hablar conmigo hoy. Me emociona conocer más sobre ti",
   transcriber: {
     provider: "deepgram",
     model: "nova-2",
-    language: "en",
+    language: "es",
   },
   voice: {
     provider: "11labs",
