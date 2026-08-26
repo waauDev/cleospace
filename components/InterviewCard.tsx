@@ -9,7 +9,7 @@ import { cn, getRandomInterviewCover } from "@/lib/utils";
 import { getFeedbackByInterviewId } from "@/lib/actions/general.actions";
 
 const InterviewCard = async ({
-  interviewId,
+  id,
   userId,
   role,
   type,
@@ -17,9 +17,9 @@ const InterviewCard = async ({
   createdAt,
 }: InterviewCardProps) => {
   const feedback =
-    userId && interviewId
+    userId && id
       ? await getFeedbackByInterviewId({
-          interviewId,
+          id,
           userId,
         })
       : null;
@@ -38,7 +38,7 @@ const InterviewCard = async ({
   ).format("MMM D, YYYY");
 
   return (
-    <div className="card-border w-[90] max-sm:w-full min-h-96">
+    <div className="card-border w-[300] max-sm:w-full min-h-96">
       <div className="card-interview">
         <div>
           {/* Type Badge */}
@@ -95,8 +95,8 @@ const InterviewCard = async ({
             <Link
               href={
                 feedback
-                  ? `/interview/${interviewId}/feedback`
-                  : `/interview/${interviewId}`
+                  ? `/space/${id}/feedback`
+                  : `/space/${id}`
               }
             >
               {feedback ? "Check Feedback" : "View Interview"}

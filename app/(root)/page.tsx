@@ -2,11 +2,10 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
-import { dummyInterviews } from "@/constants";
 import InterviewCard from "@/components/InterviewCard";
 
-
-import { getCurrentUser, getInterviewsByUserId, getLatestInterviews } from "@/lib/actions/auth.action";
+import {getCurrentUser} from "@/lib/actions/auth.action";
+import {  getInterviewsByUserId, getLatestInterviews } from "@/lib/actions/general.actions";
 
 async function Home() {
   const user = await getCurrentUser();
@@ -29,7 +28,7 @@ async function Home() {
           </p>
 
           <Button asChild className="btn-primary max-sm:w-full">
-            <Link href="/interview">Start an Interview</Link>
+            <Link href="/space">Start an Interview</Link>
           </Button>
         </div>
 
