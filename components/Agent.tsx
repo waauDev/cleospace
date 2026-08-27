@@ -1,6 +1,7 @@
 "use client";
 
 import { interviewer } from '@/constants';
+import { createFeedback } from '@/lib/actions/general.actions';
 import { cn } from '@/lib/utils';
 import { vapi } from '@/lib/vapi.sdk';
 import Image from 'next/image';
@@ -68,10 +69,11 @@ const Agent = ({userName, userId, type, interviewId, questions}:AgentProps) => {
     const handleGenerateFeedBack = async(messages: SavedMessage[])=>{
         console.log('generate feed back');
 
-        const {success, id} ={
-            success: true,
-            id:'feedback-id'
-        }
+        const {success, feedbackId:id} = await createFeedback({
+            interviewId: interviewId!,
+            userId: userId!,
+            transcript: messages
+        })
 
         if(success && id){
             router.push(`/space/${interviewId}/feedback`);
@@ -89,9 +91,6 @@ const Agent = ({userName, userId, type, interviewId, questions}:AgentProps) => {
                 handleGenerateFeedBack(messages);
             }
         }
-
-        if(callStatus === CallStatus.FINISHED) router.push('/');
-
     },[messages, callStatus, type, userId]);
 
     const handleCall = async ()=>{

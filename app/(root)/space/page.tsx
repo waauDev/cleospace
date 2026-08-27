@@ -6,7 +6,7 @@ const Page = async()=> {
   return (
     <>
         <h3>Desahogate...</h3>
-        <Agent userName={user?.name} userId={user?.id} type="generate"/>
+        <Agent userName={user?.name || ''} userId={user?.id} type="generate"/>
     </>
   )
 }
