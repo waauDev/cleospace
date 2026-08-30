@@ -5,7 +5,9 @@ const Page = async()=> {
   const user = await getCurrentUser();
   return (
     <>
-        <h3>Desahogate...</h3>
+        <div className="nameplate w-fit">
+          <h3 className="text-text!">Desahogate...</h3>
+        </div>
         <Agent userName={user?.name} userId={user?.id} type="generate"/>
     </>
   )

@@ -61,7 +61,7 @@ const Agent = ({userName, userId, type, interviewId, questions}:AgentProps) => {
                 vapi.off('error', onError);
         }
 
-        
+
 
     },[])
 
@@ -119,7 +119,7 @@ const Agent = ({userName, userId, type, interviewId, questions}:AgentProps) => {
                 }
             })
         }
-        
+
     }
 
     const handleDisconnect = async()=>{
@@ -128,25 +128,32 @@ const Agent = ({userName, userId, type, interviewId, questions}:AgentProps) => {
         vapi.stop();
     }
 
-    
-    
+
+
     const latestMessage = messages[messages.length -1]?.content;
     const isCallInactiveOrFinished = callStatus ===CallStatus.INACTIVE || callStatus ===CallStatus.FINISHED;
-  
+    const isLive = callStatus === CallStatus.ACTIVE;
+
   return (
     <>
         <div className="call-view">
             <div className="card-interviewer">
+                <div className="screen flex items-center gap-2 py-1">
+                    <span className="on-air-dot" data-lit={isLive} />
+                    <span className={cn('digits text-xs', !isLive && 'digits--green')}>
+                        {isLive ? 'GRABANDO' : 'EN ESPERA'}
+                    </span>
+                </div>
                 <div className='avatar'>
-                    <Image src="/ai-avatar.png" alt="vapi" width={65} height={54} className='object-cover' />
+                    <Image src="/ai-avatar.png" alt="CleoSpace" width={65} height={54} className='object-cover' />
                     {isSpeaking && <span className='animate-speak'/>}
                 </div>
-                <h3>Fella AI</h3>
+                <h3>CleoSpace</h3>
             </div>
             <div className='card-border'>
                 <div className='card-content'>
-                    <Image src="/user-avatar.png" alt="user avatar" width={540} height={540} className='rounded-full object-cover size-[120px]'/>
-                    <h3>{userName}</h3>
+                    <Image src="/user-avatar.png" alt="user avatar" width={540} height={540} className='rounded-full object-cover size-30 border-nb'/>
+                    <h3 className="text-text!">{userName}</h3>
                 </div>
             </div>
         </div>
@@ -162,8 +169,9 @@ const Agent = ({userName, userId, type, interviewId, questions}:AgentProps) => {
         )}
         <div className="w-full flex justify-center">
             {callStatus != 'ACTIVE' ? (
-                <button className='relative btn-call' onClick={handleCall}>
-                    <span className={cn('absolute animate-ping rounded-full opacity-75', callStatus != 'CONNECTING' && 'hidden')}
+                <button className='btn-call' onClick={handleCall}>
+                    <span className={cn('on-air-dot', callStatus === 'CONNECTING' && 'animate-pulse')}
+                        data-lit={callStatus === CallStatus.CONNECTING}
                     />
                     <span>
                         {isCallInactiveOrFinished? 'Call': '....'}

@@ -1,11 +1,10 @@
 import dayjs from "dayjs";
 import Link from "next/link";
-import Image from "next/image";
 
 import { Button } from "./ui/button";
 import DisplayTechIcons from "./DisplayTechIcons";
 
-import { cn, getRandomInterviewCover } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { getFeedbackByInterviewId } from "@/lib/actions/general.actions";
 
 const InterviewCard = async ({
@@ -26,79 +25,68 @@ const InterviewCard = async ({
 
   const normalizedType = /mix/gi.test(type) ? "Mixed" : type;
 
-  const badgeColor =
+  const badgeDot =
     {
-      Behavioral: "bg-light-400",
-      Mixed: "bg-light-600",
-      Technical: "bg-light-800",
-    }[normalizedType] || "bg-light-600";
+      Behavioral: "bg-success",
+      Mixed: "bg-secondary",
+      Technical: "bg-warning",
+    }[normalizedType] || "bg-warning";
+
+  const reelColor =
+    {
+      Behavioral: "text-success",
+      Mixed: "text-secondary",
+      Technical: "text-warning",
+    }[normalizedType] || "text-warning";
 
   const formattedDate = dayjs(
     feedback?.createdAt || createdAt || Date.now()
   ).format("MMM D, YYYY");
 
   return (
-    <div className="card-border w-[300] max-sm:w-full min-h-96">
+    <div className="card-border w-75 max-sm:w-full min-h-96">
       <div className="card-interview">
         <div>
-          {/* Type Badge */}
-          <div
-            className={cn(
-              "absolute top-0 right-0 w-fit px-4 py-2 rounded-bl-lg",
-              badgeColor
-            )}
-          >
-            <p className="badge-text ">{normalizedType}</p>
+          {/* Type label — printed like a cassette spine sticker */}
+          <div className="absolute top-4 right-4 flex items-center gap-1.5 -rotate-2 bg-surface border-nb px-2.5 py-1 rounded-sm">
+            <span className={cn("size-1.5 rounded-full", badgeDot)} />
+            <p className="badge-text">{normalizedType}</p>
           </div>
 
-          {/* Cover Image */}
-          <Image
-            src={getRandomInterviewCover()}
-            alt="cover-image"
-            width={90}
-            height={90}
-            className="rounded-full object-fit size-[90px]"
-          />
+          {/* Cover — a saved-reel porthole, colored by session type */}
+          <div className="size-17 rounded-full overflow-hidden bg-text flex-center">
+            <svg viewBox="0 0 40 40" className={cn("size-11", reelColor)} aria-hidden="true">
+              <circle cx="20" cy="20" r="16" stroke="currentColor" strokeWidth="2" fill="none" />
+              <circle cx="20" cy="20" r="4" fill="currentColor" />
+              <circle cx="20" cy="9" r="2" fill="currentColor" />
+              <circle cx="29.5" cy="25.5" r="2" fill="currentColor" />
+              <circle cx="10.5" cy="25.5" r="2" fill="currentColor" />
+            </svg>
+          </div>
 
           {/* Interview Role */}
-          <h3 className="mt-5 capitalize">{role} Interview</h3>
+          <h3 className="mt-5 capitalize text-text!">{role} Interview</h3>
 
-          {/* Date & Score */}
-          <div className="flex flex-row gap-5 mt-3">
-            <div className="flex flex-row gap-2">
-              <Image
-                src="/calendar.svg"
-                width={22}
-                height={22}
-                alt="calendar"
-              />
-              <p>{formattedDate}</p>
-            </div>
-
-            <div className="flex flex-row gap-2 items-center">
-              <Image src="/star.svg" width={22} height={22} alt="star" />
-              <p>{feedback?.totalScore || "---"}/100</p>
-            </div>
+          {/* Date & Score — the LCD readout */}
+          <div className="screen w-fit mt-3 flex flex-row gap-4">
+            <span className="digits text-sm">{formattedDate}</span>
+            <span className="digits digits--green text-sm">
+              {feedback?.totalScore ?? "---"}/100
+            </span>
           </div>
 
           {/* Feedback or Placeholder Text */}
-          <p className="line-clamp-2 mt-5">
+          <p className="line-clamp-2 mt-5 text-text-dim!">
             {feedback?.finalAssessment ||
               "You haven't taken this interview yet. Take it now to improve your skills."}
           </p>
         </div>
 
-        <div className="flex flex-row justify-between">
+        <div className="flex flex-row justify-between items-center">
           <DisplayTechIcons techStack={techstack} />
 
-          <Button className="btn-primary">
-            <Link
-              href={
-                feedback
-                  ? `/space/${id}/feedback`
-                  : `/space/${id}`
-              }
-            >
+          <Button asChild className="btn-primary">
+            <Link href={feedback ? `/space/${id}/feedback` : `/space/${id}`}>
               {feedback ? "Check Feedback" : "View Interview"}
             </Link>
           </Button>
